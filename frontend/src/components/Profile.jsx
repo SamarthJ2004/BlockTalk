@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Tweet from './Tweet';
 import GetTweets from '../getTweets';
 import './css/Profile.css';
@@ -38,6 +38,7 @@ const Profile = () => {
           tweetsCount: post.length,
           tokenCount: parseInt(userDetails[1]._hex, 16),
           nftCount: userDetails[2].length,
+					profileIpfsHash : userDetails.profileIpfsHash,
         };
         setProfile(profileDetails);
       }
@@ -65,13 +66,13 @@ const Profile = () => {
   useEffect(() => {
     if (currentAccount) {
       setTweets();
-    };
+    }
   }, [currentAccount]);
 
   useEffect(() => {
     if (currentAccount) {
       getUser();
-    };
+    }
   }, [currentAccount, post]);
 
   return (

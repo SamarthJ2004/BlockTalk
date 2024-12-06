@@ -15,8 +15,7 @@ const GetTweets = async () => {
       const updatedTweet = {
         'id': tweet.id._hex,
         'tweetTitle': tweet.title,
-        'tweetText': tweet.tweetText,
-        'isDeleted': tweet.isDeleted,
+        'ipfsHash': tweet.tweetText,
         'username': tweet.username,
         'upvote': parseInt(tweet.upvote._hex, 16),
         'downvote': parseInt(tweet.downvote._hex, 16),
@@ -43,8 +42,10 @@ const GetTweets = async () => {
       )
 
       let allTweets = await TwitterContract.getAllTweets();
+			console.log(allTweets);
       let updatedTweets = getUpdatedTweets(allTweets, ethereum.selectedAddress);
       Posts = updatedTweets;
+			console.log(Posts);
     } else {
       console.log("Ethereum object doesn't exist");
     }

@@ -1,4 +1,3 @@
-import React from 'react';
 import './css/Init.css';
 
 function Init({ connectWallet }) {
