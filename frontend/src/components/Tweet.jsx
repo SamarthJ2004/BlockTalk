@@ -1,4 +1,3 @@
-import React from 'react';
 import './css/Tweet.css'
 import { forwardRef } from 'react';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
