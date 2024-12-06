@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const PINATA_API_KEY = 'cbc39b42b789fcd96b8c';
-const PINATA_SECRET_KEY = 'b2c67d725a2a2c6696662d1325851a29607778225399dd1a1956aa54a76e3fd4';
+const PINATA_API_KEY =  import.meta.env.REACT_APP_PINATA_KEY;
+const PINATA_SECRET_KEY = import.meta.env.REACT_APP_PINATA_SECRET_KEY;
 
 // Function to upload content to IPFS via Pinata
 export const uploadToPinata = async ({ title, content, images }) => {
