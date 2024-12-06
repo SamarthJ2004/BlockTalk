@@ -9,6 +9,14 @@
     width: 100%;
 }
 
+.post.loading {
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #657786;
+}
+
 .post__body {
     display: flex;
     flex-direction: column;
@@ -40,6 +48,8 @@
 
 .post__headerDescription {
     margin: 8px 0;
+    line-height: 1.5;
+    color: #14171a;
 }
 
 .post__footer {
@@ -51,11 +61,11 @@
     color: #657786;
 }
 
-.post__footer>* {
+.post__footer > * {
     cursor: pointer;
 }
 
-.post__footer>*:hover {
+.post__footer > *:hover {
     color: #1da1f2;
 }
 
@@ -63,4 +73,167 @@
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.post__voteIcon {
+    transition: color 0.2s ease;
+}
+
+.post__deleteIcon {
+    color: #e0245e;
+    transition: color 0.2s ease;
+}
+
+.post__deleteIcon:hover {
+    color: #c51e4a;
+}
+
+/* Image Grid Styles */
+.post__images {
+    display: grid;
+    gap: 8px;
+    margin: 16px 0;
+}
+
+.post__images--single {
+    grid-template-columns: 1fr;
+}
+
+.post__images--two {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.post__images--three {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.post__images--three .post__imageContainer:first-child {
+    grid-column: span 2;
+}
+
+.post__images--four {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+}
+
+.post__imageContainer {
+    position: relative;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.post__imageContainer:hover {
+    opacity: 0.9;
+}
+
+/* Modal Styles */
+.post__imageModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.post__imageModal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90vh;
+}
+
+.post__imageModal-close {
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    color: white;
+    cursor: pointer;
+    font-size: 24px;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.post__imageModal-close:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.post__imageModal img {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #1da1f2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.button-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #1da1f2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.post.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 200px;
+  color: #657786;
+}
+
+.post__actionButton {
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  color: inherit;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.post__actionButton:hover:not(:disabled) {
+  background-color: rgba(29, 161, 242, 0.1);
+}
+
+.post__actionButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.post__actionButton.loading {
+  min-width: 32px;
+  justify-content: center;
+}
+
+.post__deleteIcon {
+  color: #e0245e;
+}
+
+.post__voteIcon {
+  color: inherit;
 }

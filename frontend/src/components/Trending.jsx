@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import EtherFunc from '../logic';
 import './css/Trending.css'
 
@@ -33,7 +33,6 @@ const TrendingTweets = () => {
           <div key={tweet.id} className="tweet-card">
             <h2>{tweet.title}</h2>
             <p><strong>By:</strong> {tweet.username}</p>
-            <p>{tweet.tweetText}</p>
             <div className="tweet-meta">
               <p>Upvotes: {tweet.upvote}</p>
               <p>Downvotes: {tweet.downvote}</p>

@@ -14,6 +14,12 @@ const Tweet = forwardRef(
     const [expandedImage, setExpandedImage] = useState(null);
     const [tweetContent, setTweetContent] = useState(null);
     const [loading, setLoading] = useState(true);
+    // Add loading states for each action
+    const [actionLoading, setActionLoading] = useState({
+      upvote: false,
+      downvote: false,
+      delete: false
+    });
 
     useEffect(() => {
       const fetchIPFSContent = async () => {
@@ -44,8 +50,8 @@ const Tweet = forwardRef(
 
     const { days, hours } = getTimeDifference(time);
 
-    const handleImageClick = (imageUrl) => {
-      setExpandedImage(imageUrl);
+    const handleImageClick = (image) => {
+      setExpandedImage("https://gateway.pinata.cloud/ipfs/"+image);
     };
 
     const getImageGridClass = () => {
@@ -61,31 +67,46 @@ const Tweet = forwardRef(
     };
 
     const handleVote = async (type) => {
+      if (actionLoading[type]) return; // Prevent multiple clicks
+      
+      setActionLoading(prev => ({ ...prev, [type]: true }));
       try {
         await EtherFunc({
           func: type,
-          data: { tweetId: id },
+          id: id,
           message: `The vote was ${type === 'upvote' ? 'increased' : 'decreased'}`
         });
       } catch (error) {
         console.error(`Error ${type}ing tweet:`, error);
+      } finally {
+        setActionLoading(prev => ({ ...prev, [type]: false }));
       }
     };
 
     const handleDelete = async () => {
+      if (actionLoading.delete) return; // Prevent multiple clicks
+      
+      setActionLoading(prev => ({ ...prev, delete: true }));
       try {
         await EtherFunc({
           func: 'deleteTweet',
-          data: { tweetId: id },
+          id: id,
           message: "The tweet was deleted"
         });
       } catch (error) {
         console.error('Error deleting tweet:', error);
+      } finally {
+        setActionLoading(prev => ({ ...prev, delete: false }));
       }
     };
 
     if (loading) {
-      return <div className="post loading">Loading...</div>;
+      return (
+        <div className="post loading">
+          <div className="loading-spinner"></div>
+          <span>Loading...</span>
+        </div>
+      );
     }
 
     return (
@@ -114,18 +135,19 @@ const Tweet = forwardRef(
                   <div 
                     key={index} 
                     className="post__imageContainer"
-                    onClick={() => handleImageClick(image.url)}
+                    onClick={() => handleImageClick(image)}
                   >
                     <img 
                       src={"https://gateway.pinata.cloud/ipfs/"+image} 
                       alt={`Tweet image ${index + 1}`}
                       className="post__image"
-									style={{ 
-    width: 100,
-    height:100,
-    objectFit: "cover",
-    borderRadius: "4px"
-  }}                    />
+                      style={{ 
+                        width: 100,
+                        height: 100,
+                        objectFit: "cover",
+                        borderRadius: "4px"
+                      }}
+                    />
                   </div>
                 ))}
               </div>
@@ -134,26 +156,55 @@ const Tweet = forwardRef(
             <div className="post__footer">
               <BookmarkButton displayName={displayName} id={id}/>
               {personal && (
-                <DeleteIcon 
-                  fontSize='small' 
+                <button 
+                  className={`post__actionButton ${actionLoading.delete ? 'loading' : ''}`}
                   onClick={handleDelete}
-                  className="post__deleteIcon"
-                />
+                  disabled={actionLoading.delete}
+                >
+                  {actionLoading.delete ? (
+                    <div className="button-spinner"></div>
+                  ) : (
+                    <DeleteIcon 
+                      fontSize='small' 
+                      className="post__deleteIcon"
+                    />
+                  )}
+                </button>
               )}
-              <div>
-                <ThumbUpIcon 
-                  fontSize="small" 
-                  onClick={() => handleVote('upvote')}
-                  className="post__voteIcon"
-                /> {upvote}
-              </div>
-              <div>
-                <ThumbDownIcon 
-                  fontSize="small" 
-                  onClick={() => handleVote('downvote')}
-                  className="post__voteIcon"
-                /> {downvote}
-              </div>
+              <button
+                className={`post__actionButton ${actionLoading.upvote ? 'loading' : ''}`}
+                onClick={() => handleVote('upvote')}
+                disabled={actionLoading.upvote}
+              >
+                {actionLoading.upvote ? (
+                  <div className="button-spinner"></div>
+                ) : (
+                  <>
+                    <ThumbUpIcon 
+                      fontSize="small" 
+                      className="post__voteIcon"
+                    />
+                    <span>{upvote}</span>
+                  </>
+                )}
+              </button>
+              <button
+                className={`post__actionButton ${actionLoading.downvote ? 'loading' : ''}`}
+                onClick={() => handleVote('downvote')}
+                disabled={actionLoading.downvote}
+              >
+                {actionLoading.downvote ? (
+                  <div className="button-spinner"></div>
+                ) : (
+                  <>
+                    <ThumbDownIcon 
+                      fontSize="small" 
+                      className="post__voteIcon"
+                    />
+                    <span>{downvote}</span>
+                  </>
+                )}
+              </button>
             </div>
           </div>
         </div>
@@ -165,7 +216,7 @@ const Tweet = forwardRef(
                 className="post__imageModal-close" 
                 onClick={() => setExpandedImage(null)} 
               />
-              <img src={expandedImage} alt="Expanded view" />
+              <img src={expandedImage} alt="Expanded view" style={{width:600}}/>
             </div>
           </div>
         )}
