@@ -41,7 +41,7 @@ const Bookmarks = () => {
           nftCount: userDetails[2].length,
         };
         setProfile(profileDetails);
-				if (userDetails.profileIpfsHash) setProfileImage("https://gateway.pinata.cloud/ipfs/"+userDetails.profileIpfsHash);
+				if (userDetails.ipfsHash) setProfileImage("https://gateway.pinata.cloud/ipfs/"+userDetails.profileIpfsHash);
       }
     } catch (error) {
       console.error('User not found or error fetching user:', error);

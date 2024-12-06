@@ -20,6 +20,7 @@ const EtherFunc = async ({ func, id, message }) => {
       else if (func == 'upvote') await TwitterContract.upvote(id);
       else if (func == 'downvote') await TwitterContract.downvote(id);
       else if (func == 'addTweet') await TwitterContract.addTweet(id.tweetTitle, id.ipfsHash, false);
+			else if (func == 'updateProfilePicture') await TwitterContract.updateProfilePicture(id);
       else if (func === 'trending') {
         const trendingTweets = await TwitterContract.getTrendingTweets();
         return trendingTweets;
